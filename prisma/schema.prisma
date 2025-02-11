@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+// model Chuc_Vu {
+//   idChucVu   String     @id @map("_id") @default(auto()) @db.ObjectId
+//   TenChucVu  String     @db.String
+//   HeSoLuong  Float      @db.Double
+//   NhanVien   Nhan_Vien[] @relation("NhanVienToChucVu")
+// }
+
+// model Nhan_Vien {
+//   idNhanVien   String   @id @map("_id") @default(auto()) @db.ObjectId
+//   HoTenNV      String   @db.String
+//   GioiTinh     Boolean  @default(false)
+//   DiaChi       String   @db.String
+//   SoDienThoai  String   @db.String
+//   ChucVuId     String   @db.ObjectId
+//   ChucVu       Chuc_Vu  @relation("NhanVienToChucVu", fields: [ChucVuId], references: [idChucVu])
+//   TaiKhoan     Tai_Khoan? @relation("NhanVienToTaiKhoan")
+// }
+
+
+// model Tai_Khoan {
+//   idTaiKhoan         Int       @id @map("_id") @default(auto()) @db.ObjectId
+//   TenDangNhap        String    @db.String
+//   MatKhau            String    @db.String
+//   LoaiTaiKhoan       Int       @db.Int
+//   TrangThaiHoatDong  Boolean   @default(false)
+//   NhanVienId         String?   @db.ObjectId
+//   NhanVien           Nhan_Vien? @relation("NhanVienToTaiKhoan", fields: [NhanVienId], references: [idNhanVien])
+// }
+
+model Chuc_Vu {
+  idChucVu   String     @id @map("_id") @default(auto()) @db.ObjectId
+  TenChucVu  String     @db.String
+  HeSoLuong  Float      @db.Double
+  NhanVien   Nhan_Vien[] @relation("ChucVuToNhanVien")
+}
+
+model Nhan_Vien {
+  idNhanVien   String     @id @map("_id") @default(auto()) @db.ObjectId
+  HoTenNV      String     @db.String
+  GioiTinh     Boolean    @default(false)
+  DiaChi       String     @db.String
+  SoDienThoai  String     @db.String
+  ChucVuId     String     @db.ObjectId
+  ChucVu       Chuc_Vu    @relation("ChucVuToNhanVien", fields: [ChucVuId], references: [idChucVu])
+  TaiKhoan     Tai_Khoan? @relation("NhanVienToTaiKhoan")
+}
+
+model Tai_Khoan {
+  idTaiKhoan         String       @id @map("_id") @default(auto()) @db.ObjectId
+  TenDangNhap        String    @db.String
+  MatKhau            String    @db.String
+  LoaiTaiKhoan       Int       @db.Int
+  TrangThaiHoatDong  Boolean   @default(false)
+  NhanVienId         String    @unique @db.ObjectId
+  NhanVien           Nhan_Vien? @relation("NhanVienToTaiKhoan", fields: [NhanVienId], references: [idNhanVien])
+}
+
+
+
+model Don_Hang {
+  idDonHang             String              @id @map("_id") @default(auto()) @db.ObjectId
+  NgayDat               DateTime            
+  TongTien              Float               @db.Double
+  TrangThai             String              @db.String
+  PhuongThucThanhToan   String              @db.String
+  ChiTietDonHang        Chi_Tiet_Don_Hang[] @relation("DonHangToChiTiet")
+  NgayId                String              @db.ObjectId
+}
+
+model Chi_Tiet_Don_Hang {
+  idChiTietDonHang String   @id @map("_id") @default(auto()) @db.ObjectId
+  SoLuong          Float    @db.Double
+  GiaTungMon       Float    @db.Double
+  DonHangId        String   @db.ObjectId
+  DonHang          Don_Hang @relation("DonHangToChiTiet", fields: [DonHangId], references: [idDonHang])
+  MonAnId          String   @db.ObjectId
+  MonAn            Mon_An   @relation("MonAnToChiTiet", fields: [MonAnId], references: [idMonAn])
+}
+
+model Mon_An {
+  idMonAn  String              @id @map("_id") @default(auto()) @db.ObjectId
+  TenMonAn String              @db.String
+  MoTa     String              @db.String
+  Gia      Float               @db.Double
+  DanhMuc  String              @db.String
+  GiaMonAn Gia_Mon_An[]        @relation("MonAnToGia")
+  ChiTiet  Chi_Tiet_Don_Hang[] @relation("MonAnToChiTiet")
+}
+
+
+model Nha_Hang {
+  idNhaHang   String   @id @map("_id") @default(auto()) @db.ObjectId
+  TenNhaHang  String   @db.String
+  DiaChi      String   @db.String
+  SoDienThoai String   @db.String
+  GioHoatDong DateTime 
+}
+
+
+
+
+model Gia_Mon_An {
+  idGiaMonAn String   @id @map("_id") @default(auto()) @db.ObjectId
+  MonAnId    String   @db.ObjectId
+  MonAn      Mon_An   @relation("MonAnToGia", fields: [MonAnId], references: [idMonAn])
+  Ngay       DateTime 
+}
+
+
+
+
+
+
+
+
+
+
