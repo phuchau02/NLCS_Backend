@@ -13,80 +13,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// model Chuc_Vu {
-//   idChucVu   String     @id @map("_id") @default(auto()) @db.ObjectId
-//   TenChucVu  String     @db.String
-//   HeSoLuong  Float      @db.Double
-//   NhanVien   Nhan_Vien[] @relation("NhanVienToChucVu")
-// }
-
-// model Nhan_Vien {
-//   idNhanVien   String   @id @map("_id") @default(auto()) @db.ObjectId
-//   HoTenNV      String   @db.String
-//   GioiTinh     Boolean  @default(false)
-//   DiaChi       String   @db.String
-//   SoDienThoai  String   @db.String
-//   ChucVuId     String   @db.ObjectId
-//   ChucVu       Chuc_Vu  @relation("NhanVienToChucVu", fields: [ChucVuId], references: [idChucVu])
-//   TaiKhoan     Tai_Khoan? @relation("NhanVienToTaiKhoan")
-// }
-
-
-// model Tai_Khoan {
-//   idTaiKhoan         Int       @id @map("_id") @default(auto()) @db.ObjectId
-//   TenDangNhap        String    @db.String
-//   MatKhau            String    @db.String
-//   LoaiTaiKhoan       Int       @db.Int
-//   TrangThaiHoatDong  Boolean   @default(false)
-//   NhanVienId         String?   @db.ObjectId
-//   NhanVien           Nhan_Vien? @relation("NhanVienToTaiKhoan", fields: [NhanVienId], references: [idNhanVien])
-// }
-
 model Chuc_Vu {
-  idChucVu   String     @id @map("_id") @default(auto()) @db.ObjectId
-  TenChucVu  String     @db.String
-  HeSoLuong  Float      @db.Double
-  NhanVien   Nhan_Vien[] @relation("ChucVuToNhanVien")
+  idChucVu  String      @id @default(auto()) @map("_id") @db.ObjectId
+  TenChucVu String      @db.String
+  HeSoLuong Float       @default(1.0) @db.Double
+  NhanVien  Nhan_Vien[] @relation("ChucVuToNhanVien")
 }
 
 model Nhan_Vien {
-  idNhanVien   String     @id @map("_id") @default(auto()) @db.ObjectId
-  HoTenNV      String     @db.String
-  GioiTinh     Boolean    @default(false)
-  DiaChi       String     @db.String
-  SoDienThoai  String     @db.String
-  ChucVuId     String     @db.ObjectId
-  ChucVu       Chuc_Vu    @relation("ChucVuToNhanVien", fields: [ChucVuId], references: [idChucVu])
-  TaiKhoan     Tai_Khoan? @relation("NhanVienToTaiKhoan")
+  idNhanVien  String     @id @default(auto()) @map("_id") @db.ObjectId
+  HoTenNV     String     @db.String
+  GioiTinh    Boolean    @default(false)
+  DiaChi      String     @db.String
+  SoDienThoai String     @db.String
+  idChucVu    String     @db.ObjectId
+  
+  ChucVu      Chuc_Vu    @relation("ChucVuToNhanVien", fields: [idChucVu], references: [idChucVu])
+  TaiKhoan    Tai_Khoan? @relation("NhanVienToTaiKhoan")
+  DonHang     Don_Hang[] @relation("NhanVienToDonHang")
 }
 
 model Tai_Khoan {
-  idTaiKhoan         String       @id @map("_id") @default(auto()) @db.ObjectId
-  TenDangNhap        String    @db.String
-  MatKhau            String    @db.String
-  LoaiTaiKhoan       Int       @db.Int
-  TrangThaiHoatDong  Boolean   @default(false)
-  NhanVienId         String    @unique @db.ObjectId
-  NhanVien           Nhan_Vien? @relation("NhanVienToTaiKhoan", fields: [NhanVienId], references: [idNhanVien])
+  idTaiKhoan        String       @id @default(auto()) @map("_id") @db.ObjectId
+  TenDangNhap       String       @db.String
+  MatKhau           String       @db.String
+  LoaiTaiKhoan      LoaiTaiKhoan @default(NHAN_VIEN)
+  TrangThaiHoatDong Boolean      @default(false)
+
+  idNhanVien        String?      @unique @db.ObjectId
+  NhanVien          Nhan_Vien?   @relation("NhanVienToTaiKhoan", fields: [idNhanVien], references: [idNhanVien])
+
+  idKhachHang       String?      @unique @db.ObjectId
+  KhachHang         Khach_Hang?  @relation("TaiKhoanToKhachHang", fields: [idKhachHang], references: [idKhachHang])
 }
 
+model Khach_Hang {
+  idKhachHang  String     @id @default(auto()) @map("_id") @db.ObjectId
+  TenKhachHang String     @db.String
+  Email        String     @unique @db.String
+  SoDienThoai  String     @db.String
+  DiaChi       String?    @db.String
+  NgaySinh     DateTime?
 
+  TaiKhoan     Tai_Khoan? @relation("TaiKhoanToKhachHang")
+  DonHang      Don_Hang[] @relation("KhachHangToDonHang")
+}
 
 model Don_Hang {
-  idDonHang             String              @id @map("_id") @default(auto()) @db.ObjectId
-  NgayDat               DateTime            
-  TongTien              Float               @db.Double
-  TrangThai             String              @db.String
-  PhuongThucThanhToan   String              @db.String
-  ChiTietDonHang        Chi_Tiet_Don_Hang[] @relation("DonHangToChiTiet")
-  NgayId                String              @db.ObjectId
+  idDonHang           String              @id @default(auto()) @map("_id") @db.ObjectId
+  NgayDat             DateTime            @default(now())
+  TongTien            Float               @default(0.0) @db.Double
+  TrangThai           TrangThaiDonHang    @default(CHO_XAC_NHAN)
+  PhuongThucThanhToan PhuongThucThanhToan @default(TIEN_MAT)
+  GhiChu              String?             @db.String
+  ChiTietDonHang      Chi_Tiet_Don_Hang[] @relation("DonHangToChiTiet")
+  idKhachHang         String              @db.ObjectId
+  KhachHang           Khach_Hang          @relation("KhachHangToDonHang", fields: [idKhachHang], references: [idKhachHang])
+  idNhanVien          String              @db.ObjectId
+  NhanVien            Nhan_Vien           @relation("NhanVienToDonHang", fields: [idNhanVien], references: [idNhanVien])
 }
 
+
 model Chi_Tiet_Don_Hang {
-  idChiTietDonHang String   @id @map("_id") @default(auto()) @db.ObjectId
+  idChiTietDonHang String   @id @default(auto()) @map("_id") @db.ObjectId
   SoLuong          Float    @db.Double
-  GiaTungMon       Float    @db.Double
   DonHangId        String   @db.ObjectId
   DonHang          Don_Hang @relation("DonHangToChiTiet", fields: [DonHangId], references: [idDonHang])
   MonAnId          String   @db.ObjectId
@@ -94,40 +84,48 @@ model Chi_Tiet_Don_Hang {
 }
 
 model Mon_An {
-  idMonAn  String              @id @map("_id") @default(auto()) @db.ObjectId
-  TenMonAn String              @db.String
-  MoTa     String              @db.String
-  Gia      Float               @db.Double
-  DanhMuc  String              @db.String
-  GiaMonAn Gia_Mon_An[]        @relation("MonAnToGia")
-  ChiTiet  Chi_Tiet_Don_Hang[] @relation("MonAnToChiTiet")
+  idMonAn   String              @id @default(auto()) @map("_id") @db.ObjectId
+  TenMonAn  String              @db.String
+  MoTa      String              @db.String
+  Gia       Float               @db.Double
+  DanhMuc   String              @db.String
+  GiaMonAn  Gia_Mon_An[]        @relation("MonAnToGia")
+  ChiTiet   Chi_Tiet_Don_Hang[] @relation("MonAnToChiTiet")
+  idNhaHang String              @db.ObjectId
+  NhaHang   Nha_Hang            @relation("NhaHangToMonAn", fields: [idNhaHang], references: [idNhaHang])
 }
 
-
 model Nha_Hang {
-  idNhaHang   String   @id @map("_id") @default(auto()) @db.ObjectId
+  idNhaHang   String   @id @default(auto()) @map("_id") @db.ObjectId
   TenNhaHang  String   @db.String
   DiaChi      String   @db.String
   SoDienThoai String   @db.String
-  GioHoatDong DateTime 
+  GioHoatDong DateTime
+  MonAn       Mon_An[] @relation("NhaHangToMonAn")
 }
-
-
-
 
 model Gia_Mon_An {
-  idGiaMonAn String   @id @map("_id") @default(auto()) @db.ObjectId
-  MonAnId    String   @db.ObjectId
-  MonAn      Mon_An   @relation("MonAnToGia", fields: [MonAnId], references: [idMonAn])
-  Ngay       DateTime 
+  idGiaMonAn String   @id @default(auto()) @map("_id") @db.ObjectId
+  idMonAn    String   @db.ObjectId
+  MonAn      Mon_An   @relation("MonAnToGia", fields: [idMonAn], references: [idMonAn])
+  Ngay       DateTime
 }
 
+enum TrangThaiDonHang {
+  CHO_XAC_NHAN
+  DANG_XU_LY
+  DA_GIAO
+  DA_HUY
+}
 
+enum PhuongThucThanhToan {
+  TIEN_MAT
+  CHUYEN_KHOAN
+  VI_DIEN_TU
+}
 
-
-
-
-
-
-
-
+enum LoaiTaiKhoan {
+  ADMIN
+  NHAN_VIEN
+  KHACH_HANG
+}
