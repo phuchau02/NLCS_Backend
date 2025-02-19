@@ -9,7 +9,7 @@ export const createChiTietDonHang = async (chiTietDonHangData) => {
 
 export const getAllChiTietDonHang = async () => {
   try {
-    const chiTietDonHangList = await prisma.ChiTietDonHang.findMany();
+    const chiTietDonHangList = await prisma.chi_Tiet_Don_Hang.findMany();
     return chiTietDonHangList;
   } catch (error) {
     console.error("Error fetching all ChiTietDonHang:", error);
@@ -19,7 +19,7 @@ export const getAllChiTietDonHang = async () => {
 
 export const getChiTietDonHangById = async (idChiTietDonHang) => {
   try {
-    const chiTietDonHang = await prisma.ChiTietDonHang.findUnique({
+    const chiTietDonHang = await prisma.chi_Tiet_Don_Hang.findUnique({
       where: {
         idChiTietDonHang: idChiTietDonHang,
       },
@@ -39,7 +39,7 @@ export const getChiTietDonHangById = async (idChiTietDonHang) => {
 
 export const deleteChiTietDonHangById = async (idChiTietDonHang) => {
   try {
-    const deletedChiTietDonHang = await prisma.ChiTietDonHang.delete({
+    const deletedChiTietDonHang = await prisma.chi_Tiet_Don_Hang.delete({
       where: {
         idChiTietDonHang: idChiTietDonHang,
       },
@@ -56,7 +56,7 @@ export const updateChiTietDonHangById = async (
   updateData
 ) => {
   try {
-    const updatedChiTietDonHang = await prisma.ChiTietDonHang.update({
+    const updatedChiTietDonHang = await prisma.chi_Tiet_Don_Hang.update({
       where: {
         idChiTietDonHang: idChiTietDonHang,
       },

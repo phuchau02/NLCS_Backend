@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  createChucVuController,
+  createManyChucVuController,
   findAll,
   findOne,
   update,
@@ -15,7 +15,7 @@ import {
 
 const chucVuRouter = express.Router();
 
-chucVuRouter.post("/", createChucVuController);
+chucVuRouter.post("/", createManyChucVuController);
 
 chucVuRouter.get("/", getAllChucVuController);
 

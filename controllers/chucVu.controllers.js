@@ -1,4 +1,4 @@
-import { createChucVu } from "../services/chucVu.services.js";
+import { createManyChucVu } from "../services/chucVu.services.js";
 import { getChucVuById } from "../services/chucVu.services.js";
 import { getAllChucVu } from "../services/chucVu.services.js";
 //import { deleteAllChucVu } from "../services/chucVu.services.js";
@@ -24,10 +24,10 @@ export const removeAll = (req, res) => {
   res.send({ message: "deleteAll handler" });
 };
 
-export const createChucVuController = async (req, res) => {
+export const createManyChucVuController = async (req, res) => {
   const chucVuData = req.body;
 
-  const newChucVu = await createChucVu(chucVuData);
+  const newChucVu = await createManyChucVu(chucVuData);
 
   res.send({ message: `Tao chuc vu thanh cong`, data: newChucVu });
 };

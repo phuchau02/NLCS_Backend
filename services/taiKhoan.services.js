@@ -24,7 +24,9 @@ export const createTaiKhoan = async (taiKhoanData) => {
 
 export const getAllTaiKhoan = async () => {
   try {
-    const taiKhoanList = await prisma.Tai_Khoan.findMany();
+    const taiKhoanList = await prisma.Tai_Khoan.findMany({
+      include: { KhachHang: true },
+    });
     return taiKhoanList;
   } catch (error) {
     console.error("Error fetching all TaiKhoan:", error);

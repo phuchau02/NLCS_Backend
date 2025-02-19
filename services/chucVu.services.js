@@ -1,10 +1,22 @@
 import { prisma } from "../prisma/prismaClient.js";
 
-export const createChucVu = async (chucVuData) => {
-  const chucVu = await prisma.Chuc_Vu.create({
-    data: chucVuData,
-  });
-  return chucVu;
+// export const createChucVu = async (chucVuData) => {
+//   const chucVu = await prisma.Chuc_Vu.create({
+//     data: chucVuData,
+//   });
+//   return chucVu;
+// };
+export const createManyChucVu = async (chucVuList) => {
+  try {
+    const chucVus = await prisma.chuc_Vu.createMany({
+      data: chucVuList,
+    });
+
+    return chucVus;
+  } catch (error) {
+    console.error("Lỗi khi tạo nhiều chức vụ:", error);
+    throw error;
+  }
 };
 
 export const getAllChucVu = async () => {

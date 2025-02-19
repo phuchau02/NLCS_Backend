@@ -2,9 +2,29 @@ import { prisma } from "../prisma/prismaClient.js";
 
 export const createNhanVien = async (nhanVienData) => {
   try {
-    const nhanVien = await prisma.Nhan_Vien.create({
-      data: nhanVienData,
+    const nhanVien = await prisma.nhan_Vien.create({
+      data: {
+        HoTenNV: nhanVienData.HoTenNV,
+        GioiTinh: nhanVienData.GioiTinh,
+        DiaChi: nhanVienData.DiaChi,
+        SoDienThoai: nhanVienData.SoDienThoai,
+        ChucVu: {
+          connect: { idChucVu: nhanVienData.idChucVu },
+        },
+      },
     });
+
+    if (nhanVienData.idTaiKhoan) {
+      await prisma.nhan_Vien.update({
+        where: { idNhanVien: nhanVien.idNhanVien },
+        data: {
+          TaiKhoan: {
+            connect: { idTaiKhoan: nhanVienData.idTaiKhoan },
+          },
+        },
+      });
+    }
+
     return nhanVien;
   } catch (error) {
     console.error("Error creating NhanVien:", error);
@@ -14,7 +34,9 @@ export const createNhanVien = async (nhanVienData) => {
 
 export const getAllNhanVien = async () => {
   try {
-    const nhanVienList = await prisma.Nhan_Vien.findMany();
+    const nhanVienList = await prisma.Nhan_Vien.findMany({
+      include: { TaiKhoan: true, ChucVu: true },
+    });
     return nhanVienList;
   } catch (error) {
     console.error("Error fetching all NhanVien:", error);
