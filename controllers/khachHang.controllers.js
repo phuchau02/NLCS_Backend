@@ -41,11 +41,18 @@ export const getKhachHangByIdController = async (req, res) => {
 
 // Create a new customer
 export const createKhachHangController = async (req, res) => {
-  const khachHangData = req.body;
-
-  const newKhachHang = await createKhachHang(khachHangData);
-
-  res.send({ message: "Tạo khách hàng thành công", data: newKhachHang });
+  try {
+    const newKhachHang = await createKhachHang(req.body);
+    res.status(201).json(newKhachHang);
+  } catch (error) {
+    if (error.code === "P2002") {
+      res
+        .status(400)
+        .json({ message: "Email đã được sử dụng, vui lòng nhập email khác." });
+    } else {
+      res.status(500).json({ message: "Lỗi server" });
+    }
+  }
 };
 
 // Delete a customer by ID

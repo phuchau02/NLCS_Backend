@@ -9,7 +9,7 @@ export const createNhaHang = async (nhaHangData) => {
 
 export const getAllNhaHang = async () => {
   try {
-    const nhaHangList = await prisma.Nha_Hang.findMany();
+    const nhaHangList = await prisma.nha_Hang.findMany();
     return nhaHangList;
   } catch (error) {
     console.error("Error fetching all NhaHang:", error);
@@ -19,7 +19,7 @@ export const getAllNhaHang = async () => {
 
 export const getNhaHangById = async (idNhaHang) => {
   try {
-    const nhaHang = await prisma.Nha_Hang.findUnique({
+    const nhaHang = await prisma.nha_Hang.findUnique({
       where: {
         idNhaHang: idNhaHang,
       },
@@ -36,7 +36,7 @@ export const getNhaHangById = async (idNhaHang) => {
 
 export const deleteNhaHangById = async (idNhaHang) => {
   try {
-    const deletedNhaHang = await prisma.Nha_Hang.delete({
+    const deletedNhaHang = await prisma.nha_Hang.delete({
       where: {
         idNhaHang: idNhaHang,
       },
@@ -50,7 +50,7 @@ export const deleteNhaHangById = async (idNhaHang) => {
 
 export const updateNhaHangById = async (idNhaHang, updateData) => {
   try {
-    const updatedNhaHang = await prisma.Nha_Hang.update({
+    const updatedNhaHang = await prisma.nha_Hang.update({
       where: {
         idNhaHang: idNhaHang,
       },

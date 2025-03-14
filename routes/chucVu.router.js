@@ -1,21 +1,15 @@
 import express from "express";
 import {
-  createManyChucVuController,
-  findAll,
-  findOne,
-  update,
-  remove,
-  removeAll,
+  createChucVuController,
   getAllChucVuController,
   getChucVuByIdController,
-  // deleteAllChucVuController,
   deleteChucVuByIdController,
   updateChucVuByIdController,
 } from "../controllers/chucVu.controllers.js";
 
 const chucVuRouter = express.Router();
 
-chucVuRouter.post("/", createManyChucVuController);
+chucVuRouter.post("/", createChucVuController);
 
 chucVuRouter.get("/", getAllChucVuController);
 
@@ -28,3 +22,4 @@ chucVuRouter.delete("/:id", deleteChucVuByIdController);
 //chucVuRouter.delete("/", deleteAllChucVuController);
 
 export default chucVuRouter;
+3;

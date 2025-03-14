@@ -1,7 +1,7 @@
 import { prisma } from "../prisma/prismaClient.js";
 
 export const createGiaMonAn = async (giaMonAnData) => {
-  const giaMonAn = await prisma.Gia_Mon_An.create({
+  const giaMonAn = await prisma.gia_Mon_An.create({
     data: giaMonAnData,
   });
   return giaMonAn;
@@ -9,7 +9,7 @@ export const createGiaMonAn = async (giaMonAnData) => {
 
 export const getAllGiaMonAn = async () => {
   try {
-    const giaMonAnList = await prisma.Gia_Mon_An.findMany();
+    const giaMonAnList = await prisma.gia_Mon_An.findMany();
     return giaMonAnList;
   } catch (error) {
     console.error("Error fetching all GiaMonAn:", error);
@@ -19,7 +19,7 @@ export const getAllGiaMonAn = async () => {
 
 export const getGiaMonAnById = async (idGiaMonAn) => {
   try {
-    const giaMonAn = await prisma.Gia_Mon_An.findUnique({
+    const giaMonAn = await prisma.gia_Mon_An.findUnique({
       where: {
         idGiaMonAn: idGiaMonAn,
       },
@@ -36,7 +36,7 @@ export const getGiaMonAnById = async (idGiaMonAn) => {
 
 export const deleteGiaMonAnById = async (idGiaMonAn) => {
   try {
-    const deletedGiaMonAn = await prisma.Gia_Mon_An.delete({
+    const deletedGiaMonAn = await prisma.gia_Mon_An.delete({
       where: {
         idGiaMonAn: idGiaMonAn,
       },
@@ -50,7 +50,7 @@ export const deleteGiaMonAnById = async (idGiaMonAn) => {
 
 export const updateGiaMonAnById = async (idGiaMonAn, updateData) => {
   try {
-    const updatedGiaMonAn = await prisma.Gia_Mon_An.update({
+    const updatedGiaMonAn = await prisma.gia_Mon_An.update({
       where: {
         idGiaMonAn: idGiaMonAn,
       },

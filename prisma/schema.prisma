@@ -86,9 +86,7 @@ model Chi_Tiet_Don_Hang {
 model Mon_An {
   idMonAn   String              @id @default(auto()) @map("_id") @db.ObjectId
   TenMonAn  String              @db.String
-  MoTa      String              @db.String
   Gia       Float               @db.Double
-  DanhMuc   String              @db.String
   GiaMonAn  Gia_Mon_An[]        @relation("MonAnToGia")
   ChiTiet   Chi_Tiet_Don_Hang[] @relation("MonAnToChiTiet")
   idNhaHang String              @db.ObjectId

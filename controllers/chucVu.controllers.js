@@ -1,33 +1,14 @@
-import { createManyChucVu } from "../services/chucVu.services.js";
+import { createChucVu } from "../services/chucVu.services.js";
 import { getChucVuById } from "../services/chucVu.services.js";
 import { getAllChucVu } from "../services/chucVu.services.js";
 //import { deleteAllChucVu } from "../services/chucVu.services.js";
 import { deleteChucVuById } from "../services/chucVu.services.js";
 import { updateChucVuById } from "../services/chucVu.services.js";
-export const findAll = (req, res) => {
-  res.send({ message: "findAll handler" });
-};
 
-export const findOne = (req, res) => {
-  res.send({ message: `findOne handler ${req.params.id}` });
-};
-
-export const update = (req, res) => {
-  res.send({ message: `update handler ${req.params.id}` });
-};
-
-export const remove = (req, res) => {
-  res.send({ message: `delete handler ${req.params.id}` });
-};
-
-export const removeAll = (req, res) => {
-  res.send({ message: "deleteAll handler" });
-};
-
-export const createManyChucVuController = async (req, res) => {
+export const createChucVuController = async (req, res) => {
   const chucVuData = req.body;
 
-  const newChucVu = await createManyChucVu(chucVuData);
+  const newChucVu = await createChucVu(chucVuData);
 
   res.send({ message: `Tao chuc vu thanh cong`, data: newChucVu });
 };

@@ -2,7 +2,7 @@ import { prisma } from "../prisma/prismaClient.js";
 
 // Create a new customer
 export const createKhachHang = async (khachHangData) => {
-  const khachHang = await prisma.Khach_Hang.create({
+  const khachHang = await prisma.khach_Hang.create({
     data: khachHangData,
   });
   return khachHang;
@@ -11,7 +11,7 @@ export const createKhachHang = async (khachHangData) => {
 // Get all customers
 export const getAllKhachHang = async () => {
   try {
-    const khachHangList = await prisma.Khach_Hang.findMany({
+    const khachHangList = await prisma.khach_Hang.findMany({
       include: { TaiKhoan: true },
     });
     return khachHangList;
@@ -24,7 +24,7 @@ export const getAllKhachHang = async () => {
 // Get customer by ID
 export const getKhachHangById = async (idKhachHang) => {
   try {
-    const khachHang = await prisma.Khach_Hang.findUnique({
+    const khachHang = await prisma.khach_Hang.findUnique({
       where: {
         idKhachHang: idKhachHang,
       },
@@ -43,7 +43,7 @@ export const getKhachHangById = async (idKhachHang) => {
 // Delete customer by ID
 export const deleteKhachHangById = async (idKhachHang) => {
   try {
-    const deletedKhachHang = await prisma.Khach_Hang.delete({
+    const deletedKhachHang = await prisma.khach_Hang.delete({
       where: {
         idKhachHang: idKhachHang,
       },
@@ -58,7 +58,7 @@ export const deleteKhachHangById = async (idKhachHang) => {
 // Update customer by ID
 export const updateKhachHangById = async (idKhachHang, updateData) => {
   try {
-    const updatedKhachHang = await prisma.Khach_Hang.update({
+    const updatedKhachHang = await prisma.khach_Hang.update({
       where: {
         idKhachHang: idKhachHang,
       },

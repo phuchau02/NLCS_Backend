@@ -1,27 +1,16 @@
 import { prisma } from "../prisma/prismaClient.js";
 
-// export const createChucVu = async (chucVuData) => {
-//   const chucVu = await prisma.Chuc_Vu.create({
-//     data: chucVuData,
-//   });
-//   return chucVu;
-// };
-export const createManyChucVu = async (chucVuList) => {
-  try {
-    const chucVus = await prisma.chuc_Vu.createMany({
-      data: chucVuList,
-    });
-
-    return chucVus;
-  } catch (error) {
-    console.error("Lỗi khi tạo nhiều chức vụ:", error);
-    throw error;
-  }
+export const createChucVu = async (chucVuData) => {
+  const chucVu = await prisma.chuc_Vu.create({
+    data: chucVuData,
+  });
+  return chucVu;
 };
+
 
 export const getAllChucVu = async () => {
   try {
-    const chucVuList = await prisma.Chuc_Vu.findMany();
+    const chucVuList = await prisma.chuc_Vu.findMany();
     return chucVuList;
   } catch (error) {
     console.error("Error fetching all ChucVu:", error);
@@ -31,7 +20,7 @@ export const getAllChucVu = async () => {
 
 export const getChucVuById = async (idChucVu) => {
   try {
-    const chucVu = await prisma.Chuc_Vu.findUnique({
+    const chucVu = await prisma.chuc_Vu.findUnique({
       where: {
         idChucVu: idChucVu,
       },
@@ -58,7 +47,7 @@ export const getChucVuById = async (idChucVu) => {
 
 export const deleteChucVuById = async (idChucVu) => {
   try {
-    const deletedChucVu = await prisma.Chuc_Vu.delete({
+    const deletedChucVu = await prisma.chuc_Vu.delete({
       where: {
         idChucVu: idChucVu,
       },
@@ -72,7 +61,7 @@ export const deleteChucVuById = async (idChucVu) => {
 
 export const updateChucVuById = async (idChucVu, updateData) => {
   try {
-    const updatedChucVu = await prisma.Chuc_Vu.update({
+    const updatedChucVu = await prisma.chuc_Vu.update({
       where: {
         idChucVu: idChucVu,
       },

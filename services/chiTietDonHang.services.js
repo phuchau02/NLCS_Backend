@@ -1,7 +1,7 @@
 import { prisma } from "../prisma/prismaClient.js";
 
 export const createChiTietDonHang = async (chiTietDonHangData) => {
-  const chiTietDonHang = await prisma.ChiTietDonHang.create({
+  const chiTietDonHang = await prisma.chiTietDonHang.create({
     data: chiTietDonHangData,
   });
   return chiTietDonHang;

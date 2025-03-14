@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import morgan from "morgan";
 import chucVuRouter from "./routes/chucVu.router.js";
 import nhanVienRouter from "./routes/nhanVien.router.js";
 import donHangRouter from "./routes/donHang.router.js";
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use(morgan("dev"));
 const baseRouter = express.Router();
 baseRouter.use("/chuc_vu", chucVuRouter);
 baseRouter.use("/nhan_vien", nhanVienRouter);

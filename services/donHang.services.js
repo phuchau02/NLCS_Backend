@@ -2,9 +2,18 @@ import { prisma } from "../prisma/prismaClient.js";
 
 export const createDonHang = async (donHangData) => {
   try {
-    const donHang = await prisma.Don_Hang.create({
+    if (typeof donHangData.NgayDat === "string") {
+      const parsedDate = new Date(donHangData.NgayDat);
+      if (isNaN(parsedDate.getTime())) {
+        throw new Error("Invalid NgayDat format");
+      }
+      donHangData.NgayDat = parsedDate;
+    }
+
+    const donHang = await prisma.don_Hang.create({
       data: donHangData,
     });
+
     return donHang;
   } catch (error) {
     console.error("Error creating DonHang:", error);
@@ -14,9 +23,10 @@ export const createDonHang = async (donHangData) => {
 
 export const getAllDonHang = async () => {
   try {
-    const donHangList = await prisma.Don_Hang.findMany({
+    const donHangList = await prisma.don_Hang.findMany({
       include: {
         NhanVien: true, // Bao gồm thông tin nhân viên liên kết
+        KhachHang: true,
       },
     });
     return donHangList;
@@ -28,7 +38,7 @@ export const getAllDonHang = async () => {
 
 export const getDonHangById = async (idDonHang) => {
   try {
-    const donHang = await prisma.Don_Hang.findUnique({
+    const donHang = await prisma.don_Hang.findUnique({
       where: {
         idDonHang: idDonHang,
       },
@@ -48,7 +58,7 @@ export const getDonHangById = async (idDonHang) => {
 
 export const deleteAllDonHang = async () => {
   try {
-    const deletedDonHang = await prisma.Don_Hang.deleteMany();
+    const deletedDonHang = await prisma.don_Hang.deleteMany();
     return deletedDonHang;
   } catch (error) {
     console.error("Error deleting all DonHang:", error);
@@ -58,7 +68,7 @@ export const deleteAllDonHang = async () => {
 
 export const deleteDonHangById = async (idDonHang) => {
   try {
-    const deletedDonHang = await prisma.Don_Hang.delete({
+    const deletedDonHang = await prisma.don_Hang.delete({
       where: {
         idDonHang: idDonHang,
       },
@@ -72,7 +82,7 @@ export const deleteDonHangById = async (idDonHang) => {
 
 export const updateDonHangById = async (idDonHang, updateData) => {
   try {
-    const updatedDonHang = await prisma.Don_Hang.update({
+    const updatedDonHang = await prisma.don_Hang.update({
       where: {
         idDonHang: idDonHang,
       },
